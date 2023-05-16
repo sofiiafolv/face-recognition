@@ -33,12 +33,14 @@ def get_column_from_pgm(photo_path):
 def get_faces_matrix(dir_with_faces):
     # files = os.listdir(dir_with_faces)
     result = np.zeros(img_m * img_n)
+    filenames = []
     for root, dirs, files in os.walk(dir_with_faces):
         for filename in files:
             original_photo_path = os.path.join(root, filename)
             face_column = get_column_from_pgm(original_photo_path)
             result = np.column_stack((result, face_column))
-    return result[:, 1:]
+            filenames.append(filename)
+    return result[:, 1:], filenames
 
 
 def convert_to_pgm(image_path, output_path):

@@ -23,7 +23,7 @@ def main():
     input_path, k, svd_type = parse_args()
 
     # form a matrix with all photos
-    training_faces = get_faces_matrix("../training_faces")
+    training_faces, filenames = get_faces_matrix("../training_faces")
 
     # find average face and deduct it from all photos
     average_face = np.mean(training_faces, axis=1)
@@ -54,7 +54,7 @@ def main():
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
     for i in range(640):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
-        if dist < 5:
+        if dist < 0:
             flag = True
             fig1 = plt.figure()
             ax1 = fig1.add_subplot(121)
@@ -69,12 +69,23 @@ def main():
             img_u1 = ax2.imshow(np.reshape(training_faces[:, i], (img_m, img_n)))
             img_u1.set_cmap("gray")
             plt.axis("off")
-            plt.title("Match")
+            plt.title(f"Match with {filenames[i]}")
 
             plt.show()
 
     if not flag:
-        print("Person is not in our data base")
+        fig1 = plt.figure()
+        ax1 = fig1.add_subplot(121)
+        img_avg = ax1.imshow(np.reshape(test_face_norm + average_face, (img_m, img_n)))
+        img_avg.set_cmap("gray")
+        plt.axis("off")
+        plt.title("Input face")
+
+        ax2 = fig1.add_subplot(122)
+        plt.axis("off")
+        plt.title(f"Person is not in our data base")
+
+        plt.show()
 
 
 if __name__ == "__main__":
