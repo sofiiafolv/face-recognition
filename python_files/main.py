@@ -50,13 +50,31 @@ def main():
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space
     sigma_VT = np.diag(sigma) @ VT
 
+    flag = False
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
-    dist_list = []
     for i in range(640):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
-        dist_list.append((dist, i // 64 + 1))
+        if dist < 5:
+            flag = True
+            fig1 = plt.figure()
+            ax1 = fig1.add_subplot(121)
+            img_avg = ax1.imshow(
+                np.reshape(test_face_norm + average_face, (img_m, img_n))
+            )
+            img_avg.set_cmap("gray")
+            plt.axis("off")
+            plt.title("Input face")
 
-    print(sorted(dist_list))
+            ax2 = fig1.add_subplot(122)
+            img_u1 = ax2.imshow(np.reshape(training_faces[:, i], (img_m, img_n)))
+            img_u1.set_cmap("gray")
+            plt.axis("off")
+            plt.title("Match")
+
+            plt.show()
+
+    if not flag:
+        print("Person is not in our data base")
 
 
 if __name__ == "__main__":
