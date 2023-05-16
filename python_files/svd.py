@@ -25,3 +25,8 @@ def reduced_svd(A):
 
 def k_rank_approximation(U, sigma, VT, k):
   return U[:,:k], sigma[:k], VT[:k,:]
+
+
+def k_rank_approximation_from_scratch(A, k):
+  U, sigma, VT = reduced_svd(A)
+  return U[:,:k], sigma[:k], VT[:k,:]

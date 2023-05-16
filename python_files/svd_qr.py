@@ -16,8 +16,8 @@ def simultaneous_power_iteration(A, k):
     return np.diag(R), Q
 
 
-def reduced_svd_using_qr(A):
-    eigenvalues, V = simultaneous_power_iteration(A.T @ A, 200)
+def reduced_svd_using_qr(A, k):
+    eigenvalues, V = simultaneous_power_iteration(A.T @ A, k)
     sigma = np.sqrt(eigenvalues)
     idx = np.argsort(eigenvalues)[::-1]
     sigma = sigma[idx]
