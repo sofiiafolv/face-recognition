@@ -71,7 +71,7 @@ def main(k, svd_type):
             else:
                 failure += 1
         else:
-            if int(testing_filenames[face][5:7]) in range(1, 11):
+            if int(testing_filenames[face][5:7]) in range(1, 17):
                 failure += 1
             else:
                 success += 1
