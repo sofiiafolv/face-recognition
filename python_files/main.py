@@ -53,18 +53,21 @@ def main():
     else:
         U, sigma, VT = np.linalg.svd(normalized_faces, full_matrices=False)
         U, sigma, VT = U[:, :k], sigma[:k], VT[:k, :]
-
+    print("svd done")
     # project input image onto eigenfaces space
     test_face_norm = np.squeeze(get_column_from_pgm(input_path)) - average_face
+    print("test face done")
     projected_face_coord = U.T @ test_face_norm
-
+    projected_face_coord = projected_face_coord/np.linalg.norm(projected_face_coord)
+    print("projected face done")
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space
     sigma_VT = np.diag(sigma) @ VT
 
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
     recognized_faces = []
     for i in range(number_files):
-        dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
+        dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i]/np.linalg.norm(sigma_VT[:, i]))
+        print(dist)
         if dist < 4000:
             recognized_faces.append((dist, i))
 
