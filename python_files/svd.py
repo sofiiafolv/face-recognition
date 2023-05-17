@@ -5,7 +5,6 @@ def reduced_svd(A):
   Input: any matrix A
   Returns: tuple of matrix U, array of singular values and matrix V.T 
   '''
-  # your code here
   rank_of_A = np.linalg.matrix_rank(A)
 
   symmetric_matrix_V = A.T @ A

@@ -12,7 +12,7 @@ def parse_args():
         "svd",
         type=int,
         choices=[0, 1, 2],
-        help="0 - svd using power mothod, 1 - svd using library functions for EV's and EVc's, 2 - svd from numpy",
+        help="0 - svd using power method, 1 - svd using library functions for EV's and EVc's, 2 - svd from numpy",
     )
     args = parser.parse_args()
     return args.path, args.k, args.svd
