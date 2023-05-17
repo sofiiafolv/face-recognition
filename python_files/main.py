@@ -51,11 +51,10 @@ def main():
     elif svd_type == 1:
         U, sigma, VT = k_rank_approximation_from_scratch(normalized_faces, k)
     else:
-        U, sigma, VT = np.linalg.svd(normalized_faces)
+        U, sigma, VT = np.linalg.svd(normalized_faces, full_matrices=False)
         U, sigma, VT = U[:, :k], sigma[:k], VT[:k, :]
 
     # project input image onto eigenfaces space
-    # !!!!!!!! change to input path
     test_face_norm = np.squeeze(get_column_from_pgm(input_path)) - average_face
     projected_face_coord = U.T @ test_face_norm
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space

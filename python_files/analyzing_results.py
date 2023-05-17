@@ -64,7 +64,7 @@ def main():
         t = []
         for j in [25, 50]:
             start = time.time()
-            run_python_file("../training_faces/Person1.pmg", j, i)
+            run_python_file("../testing_faces/yaleB01/yaleB01_P00A-005E-10.pgm", j, i)
             end = time.time()
             t.append(end - start)
             print(i, j)
