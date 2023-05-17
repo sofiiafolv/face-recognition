@@ -1,3 +1,4 @@
+import os
 import subprocess
 import matplotlib.pyplot as plt
 import matplotlib.colors as clrs
@@ -51,7 +52,7 @@ def build_graphs(svd_qr_times_list, svd_ev_ec_times_list, svd_numpy_times_list):
     plt.ylabel("Time, seconds", fontweight="bold", fontsize=15)
     plt.xticks(
         [r + barWidth for r in range(len(svd_qr_times_list))],
-        [25, 50],
+        [50, 200],
     )
     plt.legend()
     plt.savefig(f"../graphs/graph.png")
@@ -62,7 +63,7 @@ def main():
     times_list = []
     for i in [0, 1, 2]:
         t = []
-        for j in [25, 50]:
+        for j in [50, 200]:
             start = time.time()
             run_python_file("../training_faces/Person1.pmg", j, i)
             end = time.time()
@@ -72,4 +73,17 @@ def main():
     build_graphs(times_list[0], times_list[1], times_list[2])
 
 
-main()
+# main()
+
+def get_files_in_directory(relative_path):
+    current_directory = os.getcwd()
+    directory_path = os.path.abspath(os.path.join(current_directory, relative_path))
+    file_list = []
+    
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_list.append(file_path)
+    
+    return file_list
+
