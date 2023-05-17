@@ -60,31 +60,33 @@ def main():
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space
     sigma_VT = np.diag(sigma) @ VT
 
-    flag = False
+    recognized_faces = []
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
     for i in range(number_files):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
-        print(dist)
         if dist < 4000:
-            flag = True
-            fig1 = plt.figure()
-            ax1 = fig1.add_subplot(121)
-            img_avg = ax1.imshow(
-                np.reshape(test_face_norm + average_face, (img_m, img_n))
-            )
-            img_avg.set_cmap("gray")
-            plt.axis("off")
-            plt.title("Input face")
+            recognized_faces.append((dist, i))
 
-            ax2 = fig1.add_subplot(122)
-            img_u1 = ax2.imshow(np.reshape(training_faces[:, i], (img_m, img_n)))
-            img_u1.set_cmap("gray")
-            plt.axis("off")
-            plt.title(f"Match with {filenames[i][:7]}")
+    if  recognized_faces:
+        recognized_faces.sort()
+        fig1 = plt.figure()
+        ax1 = fig1.add_subplot(121)
+        img_avg = ax1.imshow(
+            np.reshape(test_face_norm + average_face, (img_m, img_n))
+        )
+        img_avg.set_cmap("gray")
+        plt.axis("off")
+        plt.title("Input face")
 
-            plt.show()
+        ax2 = fig1.add_subplot(122)
+        img_u1 = ax2.imshow(np.reshape(training_faces[:, recognized_faces[0][1]], (img_m, img_n)))
+        img_u1.set_cmap("gray")
+        plt.axis("off")
+        plt.title(f"Match with {filenames[recognized_faces[0][1]][:7]}")
 
-    if not flag:
+        plt.show()
+
+    else:
         fig1 = plt.figure()
         ax1 = fig1.add_subplot(121)
         img_avg = ax1.imshow(np.reshape(test_face_norm + average_face, (img_m, img_n)))
