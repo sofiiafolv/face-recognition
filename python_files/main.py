@@ -1,3 +1,5 @@
+import numpy as np
+
 from preprocessing_data import *
 from svd import *
 from svd_qr import *
@@ -17,6 +19,7 @@ def parse_args():
     args = parser.parse_args()
     return args.path, args.k, args.svd
 
+
 def count_files(relative_path):
     current_directory = os.getcwd()
     directory_path = os.path.abspath(os.path.join(current_directory, relative_path))
@@ -25,6 +28,7 @@ def count_files(relative_path):
         file_count += len(files)
 
     return file_count
+
 
 def main():
     # parse arguments
@@ -41,7 +45,6 @@ def main():
     )
 
     # plt.imshow(np.reshape(average_face, (img_m, img_n)))
-
     # calculate SVD
     if svd_type == 0:
         U, sigma, VT = reduced_svd_using_qr(normalized_faces, k)
@@ -53,9 +56,8 @@ def main():
 
     # project input image onto eigenfaces space
     # !!!!!!!! change to input path
-    test_face_norm = training_faces[:, 0] - average_face
+    test_face_norm = np.squeeze(get_column_from_pgm(input_path)) - average_face
     projected_face_coord = U.T @ test_face_norm
-
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space
     sigma_VT = np.diag(sigma) @ VT
 
@@ -63,7 +65,8 @@ def main():
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
     for i in range(number_files):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
-        if dist < 0:
+        print(dist)
+        if dist < 4000:
             flag = True
             fig1 = plt.figure()
             ax1 = fig1.add_subplot(121)
@@ -78,7 +81,7 @@ def main():
             img_u1 = ax2.imshow(np.reshape(training_faces[:, i], (img_m, img_n)))
             img_u1.set_cmap("gray")
             plt.axis("off")
-            plt.title(f"Match with {filenames[i]}")
+            plt.title(f"Match with {filenames[i][:7]}")
 
             plt.show()
 
