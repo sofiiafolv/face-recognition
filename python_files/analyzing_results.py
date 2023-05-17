@@ -1,3 +1,4 @@
+import os
 import subprocess
 import matplotlib.pyplot as plt
 import matplotlib.colors as clrs
@@ -76,3 +77,15 @@ def main():
 
 
 main()
+def get_files_in_directory(relative_path):
+    current_directory = os.getcwd()
+    directory_path = os.path.abspath(os.path.join(current_directory, relative_path))
+    file_list = []
+    
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_list.append(file_path)
+    
+    return file_list
+
