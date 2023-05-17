@@ -64,7 +64,7 @@ def main():
     recognized_faces = []
     for i in range(number_files):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i]/np.linalg.norm(sigma_VT[:, i]))
-        if dist < 4000:
+        if dist < 0.5:
             recognized_faces.append((dist, i))
 
     if  recognized_faces:
