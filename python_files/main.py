@@ -17,6 +17,14 @@ def parse_args():
     args = parser.parse_args()
     return args.path, args.k, args.svd
 
+def count_files(relative_path):
+    current_directory = os.getcwd()
+    directory_path = os.path.abspath(os.path.join(current_directory, relative_path))
+    file_count = 0
+    for root, dirs, files in os.walk(directory_path):
+        file_count += len(files)
+
+    return file_count
 
 def main():
     # parse arguments
@@ -24,7 +32,8 @@ def main():
 
     # form a matrix with all photos
     training_faces, filenames = get_faces_matrix("../training_faces")
-
+    number_files = count_files("../training_faces")
+    print(count_files)
     # find average face and deduct it from all photos
     average_face = np.mean(training_faces, axis=1)
     normalized_faces = (
@@ -52,7 +61,7 @@ def main():
 
     flag = False
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
-    for i in range(640):
+    for i in range(number_files):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
         if dist < 0:
             flag = True
