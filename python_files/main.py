@@ -38,13 +38,13 @@ def main():
     training_faces, filenames = get_faces_matrix("../training_faces")
     number_files = count_files("../training_faces")
     print(count_files)
+
     # find average face and deduct it from all photos
     average_face = np.mean(training_faces, axis=1)
     normalized_faces = (
         training_faces - np.tile(average_face, (training_faces.shape[1], 1)).T
     )
 
-    # plt.imshow(np.reshape(average_face, (img_m, img_n)))
     # calculate SVD
     if svd_type == 0:
         U, sigma, VT = reduced_svd_using_qr(normalized_faces, k)
@@ -57,11 +57,12 @@ def main():
     # project input image onto eigenfaces space
     test_face_norm = np.squeeze(get_column_from_pgm(input_path)) - average_face
     projected_face_coord = U.T @ test_face_norm
+
     # calculate sigma @ VT to easily find coordinate vectors of training set images in the eigenfaces space
     sigma_VT = np.diag(sigma) @ VT
 
-    recognized_faces = []
     # calculate distances between coordinate vectors of input face and training set images in the eigenfaces space
+    recognized_faces = []
     for i in range(number_files):
         dist = np.linalg.norm(projected_face_coord - sigma_VT[:, i])
         if dist < 4000:
