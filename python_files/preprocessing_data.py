@@ -54,7 +54,8 @@ def convert_to_pgm(image_path, output_path):
 def get_column_from_user_file(path):
     new_extension = ".pgm"
     file_name, _ = os.path.splitext(path)
-    pgm_image_path = os.path.join("./training_faces", file_name + new_extension)
+    pgm_image_path = os.path.join(
+        "./training_faces", file_name + new_extension)
     convert_to_pgm(path, pgm_image_path)
     return get_column_from_pgm(pgm_image_path)
 
@@ -67,3 +68,17 @@ def proccess_user_file_into_column(photo_path):
     face_col = np.ndarray.flatten(matrix)
     face_col = np.reshape(face_col, (-1, 1))
     return face_col
+
+
+def get_files_in_directory(relative_path):
+    current_directory = os.getcwd()
+    directory_path = os.path.abspath(
+        os.path.join(current_directory, relative_path))
+    file_list = []
+
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            file_list.append(file_path)
+
+    return file_list

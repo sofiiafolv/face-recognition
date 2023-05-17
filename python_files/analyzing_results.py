@@ -68,7 +68,8 @@ def main():
         t = []
         for j in k_list:
             start = time.time()
-            run_python_file("../testing_faces/yaleB01/yaleB01_P00A-005E-10.pgm", j, i)
+            run_python_file(
+                "../testing_faces/yaleB01/yaleB01_P00A-005E-10.pgm", j, i)
             end = time.time()
             t.append(end - start)
             print(i, j)
@@ -77,15 +78,3 @@ def main():
 
 
 main()
-def get_files_in_directory(relative_path):
-    current_directory = os.getcwd()
-    directory_path = os.path.abspath(os.path.join(current_directory, relative_path))
-    file_list = []
-    
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            file_list.append(file_path)
-    
-    return file_list
-
