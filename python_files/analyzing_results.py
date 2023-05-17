@@ -5,6 +5,9 @@ from numpy import arange
 import time
 
 
+k_list = [25, 50, 100, 200, 300]
+
+
 def run_python_file(path, k, svd_type):
     try:
 
@@ -51,7 +54,7 @@ def build_graphs(svd_qr_times_list, svd_ev_ec_times_list, svd_numpy_times_list):
     plt.ylabel("Time, seconds", fontweight="bold", fontsize=15)
     plt.xticks(
         [r + barWidth for r in range(len(svd_qr_times_list))],
-        [25, 50],
+        k_list,
     )
     plt.legend()
     plt.savefig(f"../graphs/graph.png")
@@ -62,7 +65,7 @@ def main():
     times_list = []
     for i in [0, 1, 2]:
         t = []
-        for j in [25, 50]:
+        for j in k_list:
             start = time.time()
             run_python_file("../testing_faces/yaleB01/yaleB01_P00A-005E-10.pgm", j, i)
             end = time.time()
